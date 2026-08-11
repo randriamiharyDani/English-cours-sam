@@ -118,10 +118,10 @@ const mockVideos: Video[] = [
 ];
 
 const mockPhotos: Photo[] = [
-  { id: 1, album: "Cours en groupe", url: "https://picsum.photos/id/1015/800/800", thumbnail: "https://picsum.photos/id/1015/400/400", alt: "Cours en groupe", category: "Cours", createdAt: "2024-01-15" },
-  { id: 2, album: "Cours en groupe", url: "https://picsum.photos/id/1011/800/800", thumbnail: "https://picsum.photos/id/1011/400/400", alt: "Club de conversation", category: "Cours", createdAt: "2024-01-20" },
-  { id: 3, album: "Événements", url: "https://picsum.photos/id/1027/800/800", thumbnail: "https://picsum.photos/id/1027/400/400", alt: "Remise de certificats", category: "Événement", createdAt: "2024-02-10" },
-  { id: 4, album: "Événements", url: "https://picsum.photos/id/1062/800/800", thumbnail: "https://picsum.photos/id/1062/400/400", alt: "Workshop", category: "Événement", createdAt: "2024-02-15" },
+  { id: 1, album: "Cours en groupe", url: "/assets-old/img/image2.jpg", thumbnail: "/assets-old/img/image2.jpg", alt: "Cours en groupe", category: "Cours", createdAt: "2024-01-15" },
+  { id: 2, album: "Cours en groupe", url: "/assets-old/img/image2.jpg", thumbnail: "/assets-old/img/image3.jpg", alt: "Club de conversation", category: "Cours", createdAt: "2024-01-20" },
+  { id: 3, album: "Événements", url: "/assets-old/img/image2.jpg", thumbnail: "/assets-old/img/image4.jpg", alt: "Remise de certificats", category: "Événement", createdAt: "2024-02-10" },
+  { id: 4, album: "Événements", url: "/assets-old/img/image2.jpg", thumbnail: "/assets-old/img/image5.jpg", alt: "Workshop", category: "Événement", createdAt: "2024-02-15" },
 ];
 
 const mockBlogPosts: BlogPost[] = [
@@ -144,23 +144,29 @@ const mockMessages: Message[] = [
 
 export const api = {
   getCourses: async (): Promise<Course[]> => Promise.resolve(mockCourses),
+
   getCourse: async (id: number): Promise<Course | undefined> => Promise.resolve(mockCourses.find(c => c.id === id)),
+
   createCourse: async (course: Omit<Course, 'id' | 'createdAt'>): Promise<Course> => {
     const newCourse = { ...course, id: Date.now(), createdAt: new Date().toISOString() };
     mockCourses.push(newCourse);
     return Promise.resolve(newCourse);
   },
+
   updateCourse: async (id: number, course: Partial<Course>): Promise<Course> => {
     const index = mockCourses.findIndex(c => c.id === id);
     if (index === -1) throw new Error('Course not found');
     mockCourses[index] = { ...mockCourses[index], ...course };
     return Promise.resolve(mockCourses[index]);
   },
+
   deleteCourse: async (id: number): Promise<void> => {
     const index = mockCourses.findIndex(c => c.id === id);
     if (index !== -1) mockCourses.splice(index, 1);
     return Promise.resolve();
   },
+
+
   getLessons: async (): Promise<Lesson[]> => Promise.resolve(mockLessons),
   getLessonsByCourse: async (courseId: number): Promise<Lesson[]> => Promise.resolve(mockLessons.filter(l => l.courseId === courseId)),
   getVideos: async (): Promise<Video[]> => Promise.resolve(mockVideos),
@@ -173,6 +179,9 @@ export const api = {
     if (message) message.status = 'read';
     return Promise.resolve();
   },
+
+
+
   getStats: async (): Promise<Stats> => Promise.resolve({
     courses: mockCourses.length,
     lessons: mockLessons.length,

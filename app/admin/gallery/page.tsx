@@ -30,7 +30,7 @@ export default function GalleryPage() {
       </div>
 
       <div className="content-card">
-        <div className="filters" style={{ marginBottom: "20px" }}>
+        <div className="filters mb-5">
           <select value={selectedAlbum} onChange={(e) => setSelectedAlbum(e.target.value)} className="filter-select">
             {albums.map(album => (
               <option key={album} value={album}>
@@ -42,15 +42,23 @@ export default function GalleryPage() {
 
         {loading ? (
           <div className="loading-state">Chargement...</div>
+        ) : filteredPhotos.length === 0 ? (
+          <div className="empty-state">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <h3>Aucune photo</h3>
+            <p>Ajoutez des photos pour remplir la galerie</p>
+          </div>
         ) : (
-          <div className="gallery-grid">
+          <div className="admin-gallery-grid">
             {filteredPhotos.map((photo) => (
-              <div key={photo.id} className="gallery-item">
-                <img src={photo.thumbnail} alt={photo.alt} />
-                <div className="gallery-item-overlay">
+              <div key={photo.id} className="admin-gallery-item">
+                <img src={photo.thumbnail} alt={photo.alt} loading="lazy" />
+                <div className="admin-gallery-item-overlay">
                   <p><strong>{photo.alt}</strong></p>
-                  <p style={{ fontSize: "12px", opacity: 0.8 }}>{photo.album}</p>
-                  <div className="actions" style={{ marginTop: "8px" }}>
+                  <p className="text-xs opacity-80">{photo.album}</p>
+                  <div className="actions mt-2">
                     <button className="btn-icon" title="Modifier">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="16" height="16">
                         <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -68,48 +76,6 @@ export default function GalleryPage() {
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        .gallery-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-          gap: 20px;
-        }
-        .gallery-item {
-          position: relative;
-          border-radius: var(--radius-md);
-          overflow: hidden;
-          aspect-ratio: 1;
-          cursor: pointer;
-        }
-        .gallery-item img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.3s ease;
-        }
-        .gallery-item:hover img {
-          transform: scale(1.05);
-        }
-        .gallery-item-overlay {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-          color: #fff;
-          padding: 20px;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-        .gallery-item:hover .gallery-item-overlay {
-          opacity: 1;
-        }
-        .gallery-item-overlay p {
-          margin: 0;
-          color: #fff;
-        }
-      `}</style>
     </div>
   );
 }
